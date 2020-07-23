@@ -1,0 +1,12 @@
+{
+  "db": {
+    "ip": "localhost",
+    "port": "27017",
+    "username": "",
+    "password": ""
+  },
+  "client": {
+    "ipaddr": "",
+    "port": ""
+  }
+}
