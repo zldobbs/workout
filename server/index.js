@@ -9,21 +9,29 @@ const bodyParser = require("body-parser");
 const cors = require("cors"); 
 const config = require("./config.json");
 const mongoose = require("mongoose"); 
+const passport = require("passport"); 
 
 const app = express(); 
 const server = require("http").Server(app);
 
 app.use(cors());
 app.options("*", cors());
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// API
-const UserAPI = require("./routes/api/user");
+// Passport setup for authenticating routes 
+const User = require("./models/user.model"); 
+app.use(passport.initialize()); 
+app.use(passport.session()); 
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser()); 
+passport.deserializeUser(User.deserializeUser()); 
+
+// API route definitions 
+const UserAPI = require("./app/routes/user.routes");
 app.use("/api/user", UserAPI);
 
-const port = process.env.PORT || "4000";
-
 // Start listening for connections on the server 
+const port = process.env.PORT || "4000";
 server.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);
 });
