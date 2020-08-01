@@ -16,7 +16,8 @@ module.exports = class UserController {
       firstName = "",
       lastName = ""
     },
-    password = ""
+    password = "",
+    confirmPassword = ""
   ) {
     // Email check 
     let atSign = email.indexOf("@"); 
@@ -34,7 +35,13 @@ module.exports = class UserController {
     if (username.length < 1 || username.length > 14  || 
         firstName.length < 1 || firstName.length > 28 || 
         lastName.length < 1 || lastName.length > 28 || 
-        password.length < 1 ||  password.length > 28) {
+        password.length < 1 ||  password.length > 28 ||
+        confirmPassword.length < 1 || confirmPassword.length > 28) {
+      return false; 
+    }
+
+    // Verify password is same 
+    if (password !== confirmPassword) {
       return false; 
     }
 

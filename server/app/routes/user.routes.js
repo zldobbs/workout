@@ -10,12 +10,15 @@ const User = require("../../models/user.model");
 const UserController = require("../controllers/user.controller"); 
 const router = express.Router();
 
+// TODO Will need to still handle isAuthenticated access
+
 router.get("/", (req, res) => {
   // TODO Return user's profile information. 
 });
 
 // Handle registration attempts
 router.post("/register", (req, res) => {
+  console.log(req.body); 
   let userRequest = new User({ 
     email: req.body.email, 
     username: req.body.username,
@@ -23,7 +26,7 @@ router.post("/register", (req, res) => {
     lastName: req.body.lastName 
   });
 
-  if (!UserController.verifyUserRequest(userRequest, req.body.password)) {
+  if (!UserController.verifyUserRequest(userRequest, req.body.password, req.body.confirmPassword)) {
     res.status(400).json({
       message: "Invalid input data provided"
     });
