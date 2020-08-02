@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { View, Text, StyleSheet } from 'react-native';
-import RegisterForm from '../components/RegisterForm.component';
 import { Typography, Spacing } from '../styles/index';
+import RegisterForm from '../components/RegisterForm.component';
 import LoginForm from '../components/LoginForm.component';
 
 
