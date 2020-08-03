@@ -10,10 +10,28 @@ const User = require("../../models/user.model");
 const UserController = require("../controllers/user.controller"); 
 const router = express.Router();
 
-// TODO Will need to still handle isAuthenticated access
-
-router.get("/", (req, res) => {
-  // TODO Return user's profile information. 
+router.post("/", (req, res) => {
+  if (req.isAuthenticated) {
+    UserController.fetchUserByUsername(req.body.username)
+    .then((user) => {
+      console.log("Found registered user!");
+      console.log(user);
+      res.json({
+        user: user
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({
+        message: "Server error while fetching user data"
+      });
+    })
+  }
+  else {
+    res.status(401).json({
+      message: "Unauthorized. Please login"
+    });
+  }
 });
 
 // Handle registration attempts

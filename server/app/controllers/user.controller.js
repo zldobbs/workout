@@ -47,4 +47,10 @@ module.exports = class UserController {
 
     return true; 
   }
+
+  // Fetch a User's information based on their Id. 
+  // TODO May need function for fetching "other" users. i.e. Not return all info about every user 
+  static fetchUserByUsername(username) {
+    return User.findOne({ username: username });
+  }
 }

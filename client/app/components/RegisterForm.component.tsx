@@ -2,10 +2,11 @@ import React, { Component, ComponentState } from 'react';
 import { Text, View, Button } from 'react-native';
 import InputField from './InputField.component';
 import { Typography, Spacing, Colors } from '../styles/index';
-import { API_URL } from '../../App'; 
+import { Config } from '../../config'; 
+import axios from 'axios'; 
 
 interface RegisterFormProps {
-  // None 
+  handleLogin: Function
 }
 
 interface RegisterFormState { 
@@ -14,7 +15,7 @@ interface RegisterFormState {
   email: string, 
   username: string, 
   password: string, 
-  confirmPassword: string 
+  confirmPassword: string
 }
 
 // Display to users that need to login or register before accessing app 
@@ -28,7 +29,7 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
       email: '', 
       username: '', 
       password: '', 
-      confirmPassword: '' 
+      confirmPassword: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,13 +43,26 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
 
   // Handle submitting registration form
   handleSubmitForm() {
-    // TODO Convert this to use axios when I can npm install it... 
+    console.log(this.state);
+    axios.post(`${Config.API_URL}/user/register`, this.state)
+    .then((res) => {
+      if (res.status == 200) {
+        this.props.handleLogin(this.state.username);
+      }
+    })
+    .catch((err) => {
+      console.log(err); 
+    });
   }
 
   render() {
     return(
       <View style={Spacing.separate}>
         <Text style={[Typography.headingText, Typography.centerAlign]}>Sign Up</Text>
+        <InputField name="email" 
+                    label="Email" 
+                    value={this.state.email} 
+                    changeHandler={this.handleChange}></InputField>
         <InputField name="firstName" 
                     label="First Name" 
                     value={this.state.firstName} 

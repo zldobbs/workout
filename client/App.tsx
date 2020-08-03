@@ -4,10 +4,16 @@ import { View, StyleSheet } from 'react-native';
 
 // Views
 import Landing from './app/views/Landing.view';
+import Dashboard from './app/views/Dashboard.view';
 
 // Styles 
 import { Colors } from './app/styles/index';
 
+// TODO... 
+// - Figure out efficient router/navigation
+// - Implement some tests 
+// - Error messages for Login/Register forms 
+// - Implement redux 
 export default function App() {
   return (
     <View style={styles.container}>
@@ -16,11 +22,6 @@ export default function App() {
     </View>
   );
 }
-
-// Define endpoint of the server for sending requests
-// TODO Could find a better way to store this. config file? app.json? 
-// TODO Will this server URL work for Apple? 
-export const API_URL = "http://localhost:4000/api"
 
 const styles = StyleSheet.create({
   container: {

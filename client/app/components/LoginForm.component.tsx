@@ -2,10 +2,11 @@ import React, { Component, ComponentState } from 'react';
 import { Text, View, Button } from 'react-native';
 import InputField from './InputField.component';
 import { Typography, Spacing, Colors } from '../styles/index';
-import { API_URL } from '../../App'; 
+import { Config } from '../../config'; 
+import axios from 'axios';
 
 interface LoginFormProps {
-  // None 
+  handleLogin: Function 
 }
 
 interface LoginFormState { 
@@ -34,7 +35,16 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
 
   // Handle submitting login form
   handleSubmitForm() {
-    // TODO Convert this to use axios when I can npm install it... 
+    axios.post(`${Config.API_URL}/user/login`, this.state)
+    .then((res) => {
+      console.log(res);
+      if (res.status == 200) {
+        this.props.handleLogin(this.state.username); 
+      } 
+    })
+    .catch((err) => {
+      console.log(err);
+    }); 
   }
 
   render() {

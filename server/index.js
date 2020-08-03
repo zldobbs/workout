@@ -17,6 +17,7 @@ const server = require("http").Server(app);
 app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Passport setup for authenticating routes 
 const User = require("./models/user.model"); 
