@@ -9,34 +9,17 @@ const passport = require("passport");
 const User = require("../../models/user.model");
 const UserController = require("../controllers/user.controller"); 
 const router = express.Router();
+const passportConfig = require("./passportConfig"); 
 
-router.post("/", (req, res) => {
-  if (req.isAuthenticated) {
-    UserController.fetchUserByUsername(req.body.username)
-    .then((user) => {
-      console.log("Found registered user!");
-      console.log(user);
-      res.json({
-        user: user
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({
-        message: "Server error while fetching user data"
-      });
-    })
-  }
-  else {
-    res.status(401).json({
-      message: "Unauthorized. Please login"
-    });
-  }
+// Returns authenticated user information if signed in 
+router.get("/", passportConfig.auth, (req, res) => {
+  res.json({
+    message: "Authenticated"
+  });
 });
 
 // Handle registration attempts
 router.post("/register", (req, res) => {
-  console.log(req.body); 
   let userRequest = new User({ 
     email: req.body.email, 
     username: req.body.username,
@@ -74,6 +57,14 @@ router.post("/register", (req, res) => {
 router.post("/login", passport.authenticate('local'), (req, res) => {
   res.json({
     message: "Authenticated!"
+  });
+});
+
+// Handle logout 
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.json({
+    message: "Logged out"
   });
 });
 
