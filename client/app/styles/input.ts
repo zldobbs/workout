@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'; 
-import { Colors } from './colors';
+import { StyleSheet } from "react-native"; 
+import { Colors } from "./colors";
 
 // Styles regarding input forms  
 export const Input = StyleSheet.create({

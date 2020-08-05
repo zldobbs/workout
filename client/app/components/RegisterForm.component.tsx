@@ -3,19 +3,23 @@ import { Text, View, Button } from 'react-native';
 import InputField from './InputField.component';
 import { Typography, Spacing, Colors } from '../styles/index';
 import { Config } from '../../config'; 
-import axios from 'axios'; 
+import axios, { AxiosResponse, AxiosError } from 'axios'; 
 
-interface RegisterFormProps {
-  handleLogin: Function
-}
-
-interface RegisterFormState { 
+interface RegisterRequest {
   firstName: string, 
   lastName: string, 
   email: string, 
   username: string, 
   password: string, 
   confirmPassword: string
+}
+
+interface RegisterFormProps {
+  handleLogin: Function
+}
+
+interface RegisterFormState extends RegisterRequest { 
+  errorMessage: string
 }
 
 // Display to users that need to login or register before accessing app 
@@ -29,7 +33,8 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
       email: '', 
       username: '', 
       password: '', 
-      confirmPassword: ''
+      confirmPassword: '',
+      errorMessage: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -43,15 +48,16 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
 
   // Handle submitting registration form
   handleSubmitForm() {
-    console.log(this.state);
-    axios.post(`${Config.API_URL}/user/register`, this.state)
-    .then((res) => {
+    axios.post(`${Config.API_URL}/user/register`, this.state as RegisterRequest)
+    .then((res: AxiosResponse) => {
       if (res.status == 200) {
-        this.props.handleLogin(this.state.username);
+        this.setState({ errorMessage: '' });
+        this.props.handleLogin();
       }
     })
-    .catch((err) => {
+    .catch((err: AxiosError) => {
       console.log(err); 
+      this.setState({ errorMessage: err.message });
     });
   }
 
@@ -59,6 +65,10 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
     return(
       <View style={Spacing.separate}>
         <Text style={[Typography.headingText, Typography.centerAlign]}>Sign Up</Text>
+        {
+          this.state.errorMessage.length > 0 &&
+          <Text style={Typography.errorText}>{this.state.errorMessage}</Text>
+        }
         <InputField name="email" 
                     label="Email" 
                     value={this.state.email} 

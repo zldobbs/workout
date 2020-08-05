@@ -1,47 +1,51 @@
 import React, { Component } from 'react'; 
-import { Text, View } from 'react-native';
-import { Spacing, Typography } from '../styles/index';
-import axios from 'axios';
+import { Button, Text, View } from 'react-native';
+import { Colors, Typography, Base } from '../styles/index';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Config } from '../../config';
 
 interface DashboardProps {
-  username: string
+  navigation: any
 }
 
 interface DashboardState {
-  username: string, 
-  email: string 
+  // None... yet
 }
 
 export default class Dashboard extends Component<DashboardProps, DashboardState> {
   constructor(props: DashboardProps) {
     super(props); 
 
-    this.state = {
-      username: "undefined",
-      email: "undefined"
-    };
+    this.handleLogout = this.handleLogout.bind(this); 
   }
 
   componentDidMount() {
-    axios.post(`${Config.API_URL}/user/`, this.props)
-    .then((res: any) => {
-      console.log(res); 
-      this.setState({
-        username: res.data.user.username,
-        email: res.data.user.email 
-      });
+    axios.get(`${Config.API_URL}/user/`)
+    .then((res: AxiosResponse) => {
+      if (res.status !== 200) {
+        this.props.navigation.navigate("Landing"); 
+      }
     })
-    .catch((err) => {
+    .catch((err: AxiosError) => {
+      console.log(err); 
+    });
+  }
+
+  handleLogout() {
+    axios.get(`${Config.API_URL}/user/logout`)
+    .then((res: AxiosResponse) => {
+      this.props.navigation.navigate("Landing");
+    })
+    .catch((err: AxiosError) => {
       console.log(err); 
     });
   }
 
   render() {
     return(
-      <View style={Spacing.centered}>
+      <View style={Base.container}>
         <Text style={Typography.text}>You are on the dashboard. Congrats.</Text>
-        <Text style={Typography.text}>You are {this.state.username}. Your email is {this.state.email}</Text>
+        <Button color={Colors.green} title="Logout" onPress={this.handleLogout}></Button>
       </View>
     );
   }

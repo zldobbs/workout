@@ -1,18 +1,17 @@
 import React, { Component } from 'react'; 
-import { Button, View, Text, StyleSheet } from 'react-native';
-import { Typography, Spacing } from '../styles/index';
+import { Button, View, Text } from 'react-native';
+import { Colors, Typography, Base } from '../styles/index';
 import RegisterForm from '../components/RegisterForm.component';
 import LoginForm from '../components/LoginForm.component';
-import Dashboard from './Dashboard.view';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import { Config } from '../../config';
 
 interface LandingProps {
-  // None
+  navigation: any
 }
 
 interface LandingState {
-  showForm: string, 
-  loggedIn: boolean,
-  username: string
+  showForm: string
 }
 
 // Display to users that need to login or register before accessing app
@@ -21,20 +20,28 @@ export default class Landing extends Component<LandingProps, LandingState> {
     super(props);
 
     this.state = {
-      showForm: "login", 
-      loggedIn: false,
-      username: ""
+      showForm: "login",
     };
     
     this.handleLogin = this.handleLogin.bind(this); 
     this.handleFormSwitch = this.handleFormSwitch.bind(this); 
   }
-  
-  handleLogin(username: string) {
-    this.setState({ 
-      loggedIn: true,
-      username: username
+
+  componentDidMount() {
+    // Check if the user is already authenticated
+    axios.get(`${Config.API_URL}/user/`)
+    .then((res: AxiosResponse) => {
+      if (res.status == 200) {
+        this.props.navigation.navigate("Dashboard"); 
+      }
+    })
+    .catch((err: AxiosError) => {
+      console.log(err); 
     });
+  }
+  
+  handleLogin() {
+    this.props.navigation.navigate("Dashboard"); 
   }
 
   handleFormSwitch() {
@@ -44,34 +51,20 @@ export default class Landing extends Component<LandingProps, LandingState> {
   }
 
   render() {
-    if (!this.state.loggedIn) {
-      return(
-        <View style={styles.container}>
-          <Text style={Typography.headingText}>WORKOUT</Text>
-          <Text style={Typography.text}>Register or sign in to collaborate and reach your fitness goals today!</Text>
-          {
-            this.state.showForm == "register" &&
-            <RegisterForm handleLogin={this.handleLogin}></RegisterForm>
-          }
-          {
-            this.state.showForm != "register" &&
-            <LoginForm handleLogin={this.handleLogin}></LoginForm>
-          }
-          <Button title={this.state.showForm == "register" ? "Already have an account? Login Here" : "Need an account? Sign up today"} onPress={this.handleFormSwitch}></Button>
-        </View>
-      );
-    }
-    else {
-      return(
-        <Dashboard username={this.state.username}></Dashboard>
-      );
-    }
+    return(
+      <View style={Base.container}>
+        <Text style={Typography.headingText}>WORKOUT</Text>
+        <Text style={Typography.text}>Register or sign in to collaborate and reach your fitness goals today!</Text>
+        {
+          this.state.showForm == "register" &&
+          <RegisterForm handleLogin={this.handleLogin}></RegisterForm>
+        }
+        {
+          this.state.showForm != "register" &&
+          <LoginForm handleLogin={this.handleLogin}></LoginForm>
+        }
+        <Button color={Colors.green} title={this.state.showForm == "register" ? "Already have an account? Login Here" : "Need an account? Sign up today"} onPress={this.handleFormSwitch}></Button>
+      </View>
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    ...Spacing.centered,
-    padding: "10%",
-  }
-});

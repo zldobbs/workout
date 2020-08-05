@@ -1,31 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // Views
 import Landing from './app/views/Landing.view';
 import Dashboard from './app/views/Dashboard.view';
 
-// Styles 
-import { Colors } from './app/styles/index';
+const Stack = createStackNavigator(); 
 
-// TODO... 
-// - Figure out efficient router/navigation
-// - Implement some tests 
-// - Error messages for Login/Register forms 
-// - Implement redux 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Landing></Landing>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Landing" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Landing" component={Landing}></Stack.Screen>
+        <Stack.Screen name="Dashboard" component={Dashboard}></Stack.Screen>
+      </Stack.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    backgroundColor: Colors.black,
-  }
-});

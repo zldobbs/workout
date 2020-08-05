@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'; 
-import { Colors } from './colors';
+import { StyleSheet } from "react-native"; 
+import { Colors } from "./colors";
 
 // Styles regarding input forms  
 export const Typography = StyleSheet.create({
@@ -24,5 +24,12 @@ export const Typography = StyleSheet.create({
   },
   leftAlign: {
     textAlign: "left"
+  },
+  errorText: {
+    fontSize: 12,
+    margin: "2.5%", 
+    padding: "2.5%",  
+    color: Colors.white, 
+    backgroundColor: Colors.red
   }
 });
