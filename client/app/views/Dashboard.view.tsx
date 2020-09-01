@@ -1,8 +1,13 @@
 import React, { Component } from 'react'; 
-import { Button, Text, View } from 'react-native';
-import { Colors, Typography, Base } from '../styles/index';
+import { Button, View } from 'react-native';
+import { Colors, Base } from '../styles/index';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Config } from '../../config';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Profile from './Profile.view';
+import Feed from './Feed.view';
+import Lift from './Lift.view';
+// import Navbar, { NavbarSelections } from "../components/Navbar.component";
 
 interface DashboardProps {
   navigation: any
@@ -42,11 +47,24 @@ export default class Dashboard extends Component<DashboardProps, DashboardState>
   }
 
   render() {
+    const Tab = createBottomTabNavigator();
+
     return(
-      <View style={Base.container}>
-        <Text style={Typography.text}>You are on the dashboard. Congrats.</Text>
-        <Button color={Colors.green} title="Logout" onPress={this.handleLogout}></Button>
+      <View style={Base.fluidContainer}>
+        <Button color={Colors.foreground} title="Logout" onPress={this.handleLogout}></Button>
+        <Tab.Navigator initialRouteName="Feed">
+          <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+          <Tab.Screen name="Feed" component={Feed}></Tab.Screen>
+          <Tab.Screen name="Lift" component={Lift}></Tab.Screen>
+        </Tab.Navigator>
       </View>
     );
+
+    // return(
+    //   <View style={Base.fluidContainer}>
+    //     {/* <Navbar selected={NavbarSelections.Feed}></Navbar> */}
+    //     <Button color={Colors.foreground} title="Logout" onPress={this.handleLogout}></Button>
+    //   </View>
+    // );
   }
 } 

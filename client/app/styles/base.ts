@@ -5,8 +5,16 @@ import { Spacing } from "./spacing";
 // Styles regarding input forms  
 export const Base = StyleSheet.create({
   container: {
-    ...Spacing.centered,
+    flex: 1, 
     padding: "10%",
-    backgroundColor: Colors.black
+    backgroundColor: Colors.background
+  },
+  centeredContainer: {
+    ...Spacing.centered, 
+    backgroundColor: Colors.background
+  },
+  fluidContainer: {
+    flex: 1,
+    backgroundColor: Colors.background
   }
 });

@@ -52,8 +52,8 @@ export default class Landing extends Component<LandingProps, LandingState> {
 
   render() {
     return(
-      <View style={Base.container}>
-        <Text style={Typography.headingText}>WORKOUT</Text>
+      <View style={Base.centeredContainer}>
+        <Text style={Typography.headingText}>SWOL</Text>
         <Text style={Typography.text}>Register or sign in to collaborate and reach your fitness goals today!</Text>
         {
           this.state.showForm == "register" &&
@@ -63,7 +63,7 @@ export default class Landing extends Component<LandingProps, LandingState> {
           this.state.showForm != "register" &&
           <LoginForm handleLogin={this.handleLogin}></LoginForm>
         }
-        <Button color={Colors.green} title={this.state.showForm == "register" ? "Already have an account? Login Here" : "Need an account? Sign up today"} onPress={this.handleFormSwitch}></Button>
+        <Button color={Colors.foreground} title={this.state.showForm == "register" ? "Already have an account? Login Here" : "Need an account? Sign up today"} onPress={this.handleFormSwitch}></Button>
       </View>
     );
   }

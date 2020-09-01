@@ -71,7 +71,7 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
                     secure={true} 
                     value={this.state.password} 
                     changeHandler={this.handleChange}></InputField>
-        <Button color={Colors.green} title="Login" onPress={this.handleSubmitForm}></Button>
+        <Button color={Colors.foreground} title="Login" onPress={this.handleSubmitForm}></Button>
       </View>
     );
   }

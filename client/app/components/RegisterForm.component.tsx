@@ -95,7 +95,7 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
                     secure={true} 
                     value={this.state.confirmPassword} 
                     changeHandler={this.handleChange}></InputField>
-        <Button color={Colors.green} title="Register" onPress={this.handleSubmitForm}></Button>
+        <Button color={Colors.foreground} title="Register" onPress={this.handleSubmitForm}></Button>
       </View>
     );
   }

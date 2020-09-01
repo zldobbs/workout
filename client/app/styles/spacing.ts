@@ -5,6 +5,7 @@ export const Spacing = StyleSheet.create({
     flex: 1, 
     justifyContent: "center", 
     alignItems: "center", 
+    padding: "10%"
   },
   separate: {
     margin: 10,

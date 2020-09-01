@@ -5,19 +5,19 @@ import { Colors } from "./colors";
 export const Typography = StyleSheet.create({
   logoText: {
     fontSize: 72, 
-    color: Colors.green
+    color: Colors.foreground
   },
   headingText: {
     fontSize: 28, 
-    color: Colors.green
+    color: Colors.foreground
   },
   text: {
     fontSize: 18, 
-    color: Colors.white
+    color: Colors.text
   },
   smallText: {
     fontSize: 12, 
-    color: Colors.white
+    color: Colors.text
   },
   centerAlign: {
     textAlign: "center"
