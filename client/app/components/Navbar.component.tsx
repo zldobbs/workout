@@ -1,10 +1,10 @@
 import React from 'react'; 
-import { View, Button } from 'react-native';
 import { Colors, Nav } from "../styles/index"; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../views/Profile.view';
 import Lift from '../views/Lift.view';
-import Dashboard from '../views/Dashboard.view';
+import Feed from '../views/Feed.view';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 export enum NavbarSelections {
   Profile, 
@@ -12,37 +12,50 @@ export enum NavbarSelections {
   Lift
 }
 
-interface InputFieldProps {
-  selected: NavbarSelections
+interface NavbarProps {
+  // None
 }
 
-export default function Navbar(props: InputFieldProps) {
+export default function Navbar(props: NavbarProps) {
   const Tab = createBottomTabNavigator();
 
   return(
-    <Tab.Navigator initialRouteName="Feed">
-      <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
-      <Tab.Screen name="Feed" component={Dashboard}></Tab.Screen>
-      <Tab.Screen name="Lift" component={Lift}></Tab.Screen>
+    <Tab.Navigator 
+      initialRouteName="Feed"
+      tabBarOptions={{
+        activeTintColor: Colors.foreground, 
+        style: {
+          backgroundColor: Colors.background
+        }
+      }}
+    >
+      <Tab.Screen 
+        name="Profile" 
+        component={Profile}
+        options={{
+          tabBarIcon: () => 
+            <MaterialCommunityIcons name="account" size={32} color={"green"}>
+            </MaterialCommunityIcons>
+        }}
+      ></Tab.Screen>
+      <Tab.Screen 
+        name="Lift" 
+        component={Lift}
+        options={{
+          tabBarIcon: () => 
+            <MaterialCommunityIcons name="dumbbell" size={32} color={"green"}>
+            </MaterialCommunityIcons>
+        }}
+      ></Tab.Screen>
+      <Tab.Screen 
+        name="Feed"
+        component={Feed}
+        options={{
+          tabBarIcon: () => 
+            <MaterialCommunityIcons name="text-subject" size={32} color={"green"}>
+            </MaterialCommunityIcons>
+        }}
+      ></Tab.Screen>
     </Tab.Navigator>
   );
-
-  /*
-
-  Navbar without using bottom tabs
-
-  return(
-    <View style={Nav.navBar}>
-      <View style={[Nav.navCell, props.selected == NavbarSelections.Profile ? Nav.selected : Nav.dormant]}>
-        <Button title="Profile" onPress={() => navigation.navigate('Profile')} color={Colors.black}/>
-      </View>
-      <View style={[Nav.navCell, props.selected == NavbarSelections.Feed ? Nav.selected : Nav.dormant]}>
-        <Button title="Feed" onPress={() => navigation.navigate('Dashboard')} color={Colors.black}/>
-      </View>
-      <View style={[Nav.navCell, props.selected == NavbarSelections.Lift ? Nav.selected : Nav.dormant]}>
-        <Button title="Lift" onPress={() => navigation.navigate('Lift')} color={Colors.black}/>
-      </View>
-    </View>
-  );
-  */
 }

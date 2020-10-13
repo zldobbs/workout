@@ -51,7 +51,8 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
     axios.post(`${Config.API_URL}/user/register`, this.state as RegisterRequest)
     .then((res: AxiosResponse) => {
       if (res.status == 200) {
-        this.setState({ errorMessage: '' });
+        this.setState({ firstName: '', lastName: '', email: '', 
+          username: '', password: '', confirmPassword: '', errorMessage: '' });
         this.props.handleLogin();
       }
     })

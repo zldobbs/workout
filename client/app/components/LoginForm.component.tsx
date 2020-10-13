@@ -44,7 +44,7 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
     axios.post(`${Config.API_URL}/user/login`, this.state as LoginRequest)
     .then((res: AxiosResponse) => {
       if (res.status == 200) {
-        this.setState({ errorMessage: '' });
+        this.setState({ username: '', password: '', errorMessage: '' });
         this.props.handleLogin(); 
       } 
     })
