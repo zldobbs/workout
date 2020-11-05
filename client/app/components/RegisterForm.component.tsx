@@ -65,7 +65,7 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
   render() {
     return(
       <View style={Spacing.separate}>
-        <Text style={[Typography.headingText, Typography.centerAlign]}>Sign Up</Text>
+        <Text style={[Typography.headingText, Typography.centerAlign, Typography.textShadow]}>SIGN UP</Text>
         {
           this.state.errorMessage.length > 0 &&
           <Text style={Typography.errorText}>{this.state.errorMessage}</Text>
@@ -96,7 +96,7 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
                     secure={true} 
                     value={this.state.confirmPassword} 
                     changeHandler={this.handleChange}></InputField>
-        <Button color={Colors.foreground} title="Register" onPress={this.handleSubmitForm}></Button>
+        <Button color={Colors.foreground} title="REGISTER" onPress={this.handleSubmitForm}></Button>
       </View>
     );
   }

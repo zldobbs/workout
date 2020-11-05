@@ -53,7 +53,7 @@ export default class Landing extends Component<LandingProps, LandingState> {
   render() {
     return(
       <View style={Base.centeredContainer}>
-        <Text style={Typography.headingText}>SWOL</Text>
+        <Text style={[Typography.logoText, Typography.textShadow]}>beefhouse</Text>
         <Text style={Typography.text}>Register or sign in to collaborate and reach your fitness goals today!</Text>
         {
           this.state.showForm == "register" &&

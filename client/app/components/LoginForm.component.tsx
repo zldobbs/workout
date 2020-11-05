@@ -57,7 +57,7 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
   render() {
     return(
       <View style={Spacing.separate}>
-        <Text style={[Typography.headingText, Typography.centerAlign]}>Sign In</Text>
+        <Text style={[Typography.headingText, Typography.centerAlign, Typography.textShadow]}>SIGN IN</Text>
         {
           this.state.errorMessage.length > 0 &&
           <Text style={Typography.errorText}>{this.state.errorMessage}</Text>
@@ -71,7 +71,7 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
                     secure={true} 
                     value={this.state.password} 
                     changeHandler={this.handleChange}></InputField>
-        <Button color={Colors.foreground} title="Login" onPress={this.handleSubmitForm}></Button>
+        <Button color={Colors.foreground} title="LOGIN" onPress={this.handleSubmitForm}></Button>
       </View>
     );
   }

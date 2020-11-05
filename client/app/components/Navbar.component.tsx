@@ -18,14 +18,21 @@ interface NavbarProps {
 
 export default function Navbar(props: NavbarProps) {
   const Tab = createBottomTabNavigator();
+  const iconColor = "black"
 
   return(
     <Tab.Navigator 
       initialRouteName="Feed"
       tabBarOptions={{
-        activeTintColor: Colors.foreground, 
+        activeTintColor: Colors.black, 
         style: {
-          backgroundColor: Colors.background
+          backgroundColor: Colors.foreground,
+          shadowOffset: {
+            width: 0, 
+            height: -1
+          },
+          shadowOpacity: 0.25, 
+          shadowRadius: 5
         }
       }}
     >
@@ -34,7 +41,7 @@ export default function Navbar(props: NavbarProps) {
         component={Profile}
         options={{
           tabBarIcon: () => 
-            <MaterialCommunityIcons name="account" size={32} color={"green"}>
+            <MaterialCommunityIcons name="account" size={32} color={iconColor}>
             </MaterialCommunityIcons>
         }}
       ></Tab.Screen>
@@ -43,7 +50,7 @@ export default function Navbar(props: NavbarProps) {
         component={Lift}
         options={{
           tabBarIcon: () => 
-            <MaterialCommunityIcons name="dumbbell" size={32} color={"green"}>
+            <MaterialCommunityIcons name="dumbbell" size={32} color={iconColor}>
             </MaterialCommunityIcons>
         }}
       ></Tab.Screen>
@@ -52,7 +59,7 @@ export default function Navbar(props: NavbarProps) {
         component={Feed}
         options={{
           tabBarIcon: () => 
-            <MaterialCommunityIcons name="text-subject" size={32} color={"green"}>
+            <MaterialCommunityIcons name="text-subject" size={32} color={iconColor}>
             </MaterialCommunityIcons>
         }}
       ></Tab.Screen>

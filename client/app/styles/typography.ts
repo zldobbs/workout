@@ -5,11 +5,13 @@ import { Colors } from "./colors";
 export const Typography = StyleSheet.create({
   logoText: {
     fontSize: 72, 
+    fontStyle: "italic",
     color: Colors.foreground
   },
   headingText: {
     fontSize: 28, 
-    color: Colors.foreground
+    color: Colors.foreground,
+    fontWeight: "900"
   },
   text: {
     fontSize: 18, 
@@ -31,5 +33,13 @@ export const Typography = StyleSheet.create({
     padding: "2.5%",  
     color: Colors.white, 
     backgroundColor: Colors.red
+  },
+  textShadow: {
+    textShadowOffset: {
+      width: 0.5, 
+      height: 0.5
+    },
+    textShadowRadius: 2.5,
+    textShadowColor: Colors.black
   }
 });

@@ -16,5 +16,13 @@ export const Base = StyleSheet.create({
   fluidContainer: {
     flex: 1,
     backgroundColor: Colors.background
+  },
+  shadow: {
+    shadowOffset: {
+      width: 2, 
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5
   }
 });

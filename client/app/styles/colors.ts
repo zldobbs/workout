@@ -10,8 +10,8 @@ export const Colors = {
 
   // TODO Implement some magic to make these editable by user on app 
   // Possibly use AsyncStorage
-  foreground: "#4ed731",
-  foreground2: "#adf69e",
-  background: "#000", 
-  text: "#fff"
+  foreground: "#6BDBBF",
+  foreground2: "#27AA89",
+  background: "#FEFEFE", 
+  text: "#5B6470"
 };

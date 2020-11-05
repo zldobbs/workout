@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import { Text, View } from 'react-native';
+import PortalButton from '../components/PortalButton.component';
 import { Colors, Base, Typography } from '../styles/index';
 // import Navbar, { NavbarSelections } from '../components/Navbar.component';
 
@@ -21,7 +22,8 @@ export default class Lift extends Component<LiftProps, LiftState> {
   render() {
     return(
       <View style={Base.centeredContainer}>
-        <Text style={Typography.headingText}>LIFT</Text>
+        <PortalButton color={Colors.foreground} title="CREATE" subtext="Create a new workout plan"></PortalButton>
+        <PortalButton color={Colors.foreground} title="BROWSE" subtext="Browse for new workout plans"></PortalButton>
       </View>
     );
   }

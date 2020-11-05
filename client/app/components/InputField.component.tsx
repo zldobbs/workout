@@ -1,6 +1,6 @@
 import React from 'react'; 
 import { Text, TextInput } from 'react-native';
-import { Input, Typography } from "../styles/index"; 
+import { Base, Input, Typography } from "../styles/index"; 
 
 interface InputFieldProps {
   name: string, 
@@ -14,7 +14,7 @@ export default function InputField(props: InputFieldProps) {
   return(
     <>
       <Text style={Typography.smallText}>{props.label}</Text>
-      <TextInput style={Input.textInput} secureTextEntry={props.secure ? props.secure : false} onChangeText={text => props.changeHandler(props.name, text)} value={props.value}></TextInput>
+      <TextInput style={[Input.textInput, Base.shadow]} secureTextEntry={props.secure ? props.secure : false} onChangeText={text => props.changeHandler(props.name, text)} value={props.value}></TextInput>
     </>
   );
 }
