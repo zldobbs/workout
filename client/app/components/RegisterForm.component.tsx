@@ -1,24 +1,18 @@
 import React, { Component, ComponentState } from 'react'; 
 import { Text, View, Button } from 'react-native';
+import { AxiosResponse, AxiosError } from 'axios'; 
+
 import InputField from './InputField.component';
 import { Typography, Spacing, Colors } from '../styles/index';
-import { Config } from '../../config'; 
-import axios, { AxiosResponse, AxiosError } from 'axios'; 
 
-interface RegisterRequest {
-  firstName: string, 
-  lastName: string, 
-  email: string, 
-  username: string, 
-  password: string, 
-  confirmPassword: string
-}
+import WebAPI, { RegisterRequest, LoginRequest } from '../services/WebAPI.service';
 
 interface RegisterFormProps {
   handleLogin: Function
 }
 
-interface RegisterFormState extends RegisterRequest { 
+interface RegisterFormState extends RegisterRequest {
+  confirmPassword: string,
   errorMessage: string
 }
 
@@ -48,17 +42,37 @@ export default class RegisterForm extends Component<RegisterFormProps, RegisterF
 
   // Handle submitting registration form
   handleSubmitForm() {
-    axios.post(`${Config.API_URL}/user/register`, this.state as RegisterRequest)
+    if (this.state.password != this.state.confirmPassword) {
+      this.setState({ errorMessage: "Passwords do not match" });
+      return;
+    }
+
+    WebAPI.registrationService(this.state as RegisterRequest)
     .then((res: AxiosResponse) => {
       if (res.status == 200) {
-        this.setState({ firstName: '', lastName: '', email: '', 
+        WebAPI.loginService(this.state as LoginRequest)
+        .then((res: AxiosResponse) => {
+          this.setState({ firstName: '', lastName: '', email: '', 
           username: '', password: '', confirmPassword: '', errorMessage: '' });
-        this.props.handleLogin();
+          this.props.handleLogin(res.data.token); 
+        })
+        .catch((err: AxiosError) => {
+          if (err.response?.data.message) {
+            this.setState({ errorMessage:  `Failed to login: ${err.response?.data.message}` });
+          }
+          else {
+            this.setState({ errorMessage: `Failed to login: ${err.message}` });
+          }
+        });
       }
     })
     .catch((err: AxiosError) => {
-      console.log(err); 
-      this.setState({ errorMessage: err.message });
+      if (err.response?.data.message) {
+        this.setState({ errorMessage: `Failed to register: ${err.response?.data.message}` });
+      }
+      else {
+        this.setState({ errorMessage: `Failed to register: ${err.message}` });
+      }
     });
   }
 

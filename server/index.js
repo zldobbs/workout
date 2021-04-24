@@ -5,12 +5,12 @@
 */
 
 const express = require("express"); 
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+require("./auth/auth");
+
 const cors = require("cors"); 
-const config = require("./config.json");
-const mongoose = require("mongoose"); 
-const passport = require("passport"); 
-const session = require("express-session");
+const config = require("./config.json"); 
 
 const app = express(); 
 const server = require("http").Server(app);
@@ -20,18 +20,11 @@ app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Passport setup for authenticating routes 
-const User = require("./models/user.model"); 
-app.use(session({ 
-  secret: "Soprano",
-  resave: false, 
-  saveUninitialized: false 
-}));
-app.use(passport.initialize()); 
-app.use(passport.session()); 
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser()); 
-passport.deserializeUser(User.deserializeUser()); 
+// Handle errors
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({ message: err });
+});
 
 // API route definitions 
 const UserAPI = require("./app/routes/user.routes");
@@ -46,7 +39,13 @@ server.listen(port, () => {
 // Connect to MongoDB database
 mongoose.connect(
   "mongodb://" + config.db.ip + ":" + config.db.port + "/workout",
-  { user: config.db.username, pass: config.db.password }
+  { 
+    user: config.db.username, 
+    pass: config.db.password, 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+    useCreateIndex: true 
+  }
 );
 
 process.on("SIGINT", function() {

@@ -1,14 +1,11 @@
 import React, { Component, ComponentState } from 'react'; 
 import { Text, View, Button } from 'react-native';
+import { AxiosResponse, AxiosError } from 'axios';
+
 import InputField from './InputField.component';
 import { Typography, Spacing, Colors } from '../styles/index';
-import { Config } from '../../config'; 
-import axios, { AxiosResponse, AxiosError } from 'axios';
 
-interface LoginRequest { 
-  username: string, 
-  password: string 
-}
+import WebAPI, { LoginRequest } from '../services/WebAPI.service';
 
 interface LoginFormProps {
   handleLogin: Function 
@@ -18,14 +15,13 @@ interface LoginFormState extends LoginRequest {
   errorMessage: string
 }
 
-
 // Display to users that need to login or register before accessing app 
 export default class LoginForm extends Component<LoginFormProps, LoginFormState> {
   constructor(props: any) {
     super(props); 
 
     this.state = {
-      username: '', 
+      email: '', 
       password: '',
       errorMessage: ''
     };
@@ -41,16 +37,18 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
 
   // Handle submitting login form
   handleSubmitForm() {
-    axios.post(`${Config.API_URL}/user/login`, this.state as LoginRequest)
+    WebAPI.loginService(this.state as LoginRequest)
     .then((res: AxiosResponse) => {
-      if (res.status == 200) {
-        this.setState({ username: '', password: '', errorMessage: '' });
-        this.props.handleLogin(); 
-      } 
+      this.setState({ email: '', password: '', errorMessage: '' });
+      this.props.handleLogin(res.data.token); 
     })
     .catch((err: AxiosError) => {
-      console.log(err);
-      this.setState({ errorMessage: err.message }); 
+      if (err.response?.data.message) {
+        this.setState({ errorMessage: `Failed to login: ${err.response?.data.message}` });
+      }
+      else {
+        this.setState({ errorMessage: `Failed to login: ${err.message}` });
+      }
     }); 
   }
 
@@ -62,9 +60,9 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
           this.state.errorMessage.length > 0 &&
           <Text style={Typography.errorText}>{this.state.errorMessage}</Text>
         }
-        <InputField name="username" 
-                    label="Username" 
-                    value={this.state.username} 
+        <InputField name="email" 
+                    label="Email" 
+                    value={this.state.email} 
                     changeHandler={this.handleChange}></InputField>
         <InputField name="password" 
                     label="Password" 

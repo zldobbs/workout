@@ -6,58 +6,67 @@
 
 const express = require("express");
 const passport = require("passport"); 
-const User = require("../../models/user.model");
-const UserController = require("../controllers/user.controller"); 
 const router = express.Router();
-const passportConfig = require("./passportConfig"); 
+const jwt = require("jsonwebtoken");
 
 // Returns authenticated user information if signed in 
-router.get("/", passportConfig.auth, (req, res) => {
+router.get("/", passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
-    message: "Authenticated"
+    message: "Authenticated",
+    user: req.user
   });
 });
 
 // Handle registration attempts
-router.post("/register", (req, res) => {
-  let userRequest = new User({ 
-    email: req.body.email, 
-    username: req.body.username,
-    firstName: req.body.firstName, 
-    lastName: req.body.lastName 
-  });
+router.post("/register", async (req, res, next) => {
+  passport.authenticate('register-local', async (err, user, info) => {
+    try {
+      if (err) {
+        const error = new Error("Error occurred while registering");
+        return next(error);
+      }
 
-  if (!UserController.verifyUserRequest(userRequest, req.body.password, req.body.confirmPassword)) {
-    res.status(400).json({
-      message: "Invalid input data provided"
-    });
-    return; 
-  }
-
-  // Register a new user with passport 
-  User.register(userRequest, req.body.password, (err, user) => {
-    if (err) {
-      res.status(400).json({
-        message: "Unable to create new account",
-        error: err,
-        request: userRequest
-      });
-      return; 
+      if (!user) {
+        res.status(401).json(info);
+      }
+      else {
+        res.json({
+          message: "Registration successful",
+          user: req.user
+        });
+      }
+    } catch (error) {
+      return next(error);
     }
-
-    passport.authenticate('local')(req, res, () => {
-      res.json({
-        message: "Authenticated!"
-      });
-    });
-  });
+  })(req, res, next);
 });
 
 // Handle login requests 
-router.post("/login", passport.authenticate('local'), (req, res) => {
-  res.json({
-    message: "Authenticated!"
-  });
+router.post("/login", async (req, res, next) => {
+  passport.authenticate('login-local', async (err, user, info) => {
+    try {
+      if (err) {
+        const error = new Error("Error occurred while logging in");
+        return next(error);
+      }
+      if (!user) {
+        res.status(401).json(info);
+      }
+      else {
+        req.login(user, { session: false }, async (error) => {
+          if (error) return next(error);
+  
+          const body = { _id: user._id, email: user.email };
+          // TODO Move token to config
+          const token = jwt.sign({ user: body }, 'tonysoprano');
+  
+          return res.json({ token });
+        });
+      }
+    } catch (error) {
+      return next(error);
+    }
+  })(req, res, next);
 });
 
 // Handle logout 

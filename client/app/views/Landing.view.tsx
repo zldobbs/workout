@@ -40,7 +40,9 @@ export default class Landing extends Component<LandingProps, LandingState> {
     });
   }
   
-  handleLogin() {
+  handleLogin(token: string) {
+    console.log("Received JWT token: " + token);
+    // TODO Save token somewhere for later access (cookie, localstorage)?
     this.props.navigation.navigate("Dashboard"); 
   }
 

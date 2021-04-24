@@ -1,7 +1,8 @@
 import React, { Component } from 'react'; 
 import { Text, View } from 'react-native';
+import axios, { AxiosError, AxiosResponse } from 'axios'; 
 import { Colors, Base, Typography } from '../styles/index';
-// import Navbar, { NavbarSelections } from '../components/Navbar.component';
+import { Config } from '../../config';
 
 interface ProfileProps {
 }
@@ -16,6 +17,19 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
 
     this.state = {
     };
+  }
+
+  componentDidMount() {
+    console.log("Fetching");
+    axios.get(`${Config.API_URL}/user/`, { withCredentials: true })
+    .then((res: AxiosResponse) => {
+      console.log("Success");
+      console.log(res);
+    })
+    .catch((err: AxiosError) => {
+      console.log("Failed");
+      console.log(err); 
+    });
   }
 
   render() {
