@@ -8,5 +8,6 @@
   "client": {
     "ipaddr": "",
     "port": ""
-  }
+  },
+  "jwtkey": "tonysoprano"
 }

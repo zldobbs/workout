@@ -20,15 +20,15 @@ app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Handle errors
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({ message: err });
-});
-
 // API route definitions 
 const UserAPI = require("./app/routes/user.routes");
 app.use("/api/user", UserAPI);
+
+// Handle errors
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({ message: err.message });
+});
 
 // Start listening for connections on the server 
 const port = process.env.PORT || "4000";

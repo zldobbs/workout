@@ -3,14 +3,14 @@ const LocalStrategy = require("passport-local").Strategy;
 const JWTStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 
+const config = require("../config.json"); 
 const User = require("../models/user.model");
 const UserController = require("../app/controllers/user.controller"); 
 
 passport.use(
   new JWTStrategy(
     {
-      // TODO Move key to config
-      secretOrKey: 'tonysoprano',
+      secretOrKey: config.jwtkey,
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
     },
     async (token, done) => {
@@ -23,10 +23,6 @@ passport.use(
   )
 );
 
-// TODO Make this work, duh
-// Can passport use support an entire object instead of usernameField and passwordField
-// Normally {usernameFiled: email, passwordField: password} would go after 'register', 
-// If the entire object isn't supported, need to find some other way to save the user registration info (username, firstname, lastname, etc)
 passport.use(
   'register-local',
   new LocalStrategy(
